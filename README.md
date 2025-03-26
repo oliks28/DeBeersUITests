@@ -1,6 +1,6 @@
 # DeBeersUITests
 
-Help us test the De Beers Group website [De Beers Group](https://www.debeersgroup.com/) by writing tests to validate the following: 
+Help us test the De Beers Group website [De Beers Group](https://www.debeersgroup.com/) by writing Selenium C# tests to validate the following: 
 
 From the homepage 
 
