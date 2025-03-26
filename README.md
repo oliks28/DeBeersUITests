@@ -17,4 +17,3 @@ Please fork this repository and raise a pull request push to merge your code to 
 Please don't spend more than a couple of hours coding. The idea is that we can discuss your approach at the next interview.
 
 Any questions please contact martyn.hollins@debeersgroup.com.
-![image](https://github.com/user-attachments/assets/791c9212-6535-47e2-937d-fdcddbbbaa75)
