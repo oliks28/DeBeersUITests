@@ -31,11 +31,6 @@
     <PackageReference Include="WebDriverManager" Version="2.17.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Drivers\" />
-    <Folder Include="Support\" />
-  </ItemGroup>
-
 <ItemGroup>
   <None Update="appsettings.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

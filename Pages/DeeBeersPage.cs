@@ -7,6 +7,11 @@ namespace deeBeersProject.Pages
     {
         public IWebDriver driver;
 
+        public DeeBeersPage(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
+
 
         By cookies = By.XPath("//button[@id='onetrust-accept-btn-handler']");
         By about_us = By.XPath("(//span[contains(text(),'About Us')])[2]");
@@ -23,10 +28,23 @@ namespace deeBeersProject.Pages
         By title5 = By.XPath("//a[normalize-space()='Industry News and Events']");
         By searchList = By.XPath("//ul[@id='ui-id-1']");
 
-        public DeeBeersPage(IWebDriver driver)
-        {
-            this.driver = driver;
-        }
+        public IWebElement Cookies() => driver.FindElement(cookies);
+        public IWebElement AboutUs() => driver.FindElement(about_us);
+        public IWebElement Technology() => driver.FindElement(tech);
+        public IWebElement Text() => driver.FindElement(text);
+        public IWebElement SearchIcon() => driver.FindElement(searchIcon);
+        public IWebElement SearchBox() => driver.FindElement(searchBox);
+        public IWebElement Result() => driver.FindElement(resultSummary);
+        public IList<IWebElement> Results() => driver.FindElements(resultCount);
+        public IWebElement Title1_DiamondVerificationDevice() => driver.FindElement(title1);
+        public IWebElement Title2_InterimFinancialResult() => driver.FindElement(title2);
+        public IWebElement Title3_Production_report() => driver.FindElement(title3);
+        public IWebElement Title4_PriliminaryFinancial() => driver.FindElement(title4);
+        public IWebElement Title5_IndustryNews() => driver.FindElement(title5);
+        public IWebElement SearchList() => driver.FindElement(searchList);
+        public IList<IWebElement> SearchListItems() => driver.FindElements(searchList);
+
+
 
         public IWebElement HoverToElement(IWebElement element)
         {
@@ -41,24 +59,6 @@ namespace deeBeersProject.Pages
             js.ExecuteScript("arguments[0].scrollIntoView(true);", element);
             js.ExecuteScript("arguments[0].click();", element);
         }
-
-
-        public IWebElement Cookies() => driver.FindElement(cookies);
-        public IWebElement AboutUs() => driver.FindElement(about_us);
-        public IWebElement Technology() => driver.FindElement(tech);
-        public IWebElement Text() => driver.FindElement(text);
-        public IWebElement SearchIcon() => driver.FindElement(searchIcon);
-        public IWebElement SearchBox() => driver.FindElement(searchBox);
-        public IWebElement Result() => driver.FindElement(resultSummary);
-        public IList<IWebElement> Results() => driver.FindElements(resultCount);  
-        public IWebElement Title1_DiamondVerificationDevice() => driver.FindElement(title1);
-        public IWebElement Title2_InterimFinancialResult() => driver.FindElement(title2);
-        public IWebElement Title3_Production_report() => driver.FindElement(title3);
-        public IWebElement Title4_PriliminaryFinancial() => driver.FindElement(title4);
-        public IWebElement Title5_IndustryNews() => driver.FindElement(title5);
-        public IWebElement SearchList() => driver.FindElement(searchList);
-        public IList<IWebElement> SearchListItems() => driver.FindElements(searchList);
-
 
     }
 }
