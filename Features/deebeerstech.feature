@@ -5,7 +5,7 @@ A short summary of the feature
 
 @deebeers
 @testcase:1234
-Scenario: Verify that the Search functionality on Deebeers site
+Scenario: Verify the Search functionality on Deebeers site
 	Given the user navigates to the homepage
 	When the user hover on about us and click on the technology
 	Then Verify the presence of "World-leading Technology" text
