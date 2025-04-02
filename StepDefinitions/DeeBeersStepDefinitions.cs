@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 
 
 namespace deeBeersProject.StepDefinitions
@@ -78,7 +79,7 @@ namespace deeBeersProject.StepDefinitions
 
         }
 
-        [Then("the user verifies that the result contains (.*) items and titles are displayed")]
+        [Then("the user verifies that the result contains (.*) items and titles are displayed")] XmlSchemaXPath`
         public void WhenCheckThatTheResultContainsItemsAndTitlesAreDisplayed(string itemCount)
         {
             Assert.IsTrue(deeBeersPage.Result().Displayed);
