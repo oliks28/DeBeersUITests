@@ -33,12 +33,12 @@ namespace DeeBeersProject.Hooks
             [AfterScenario]
             public void AfterScenario()
             {
-                var driver = _container.Resolve<IWebDriver>();
+                 driver = _container.Resolve<IWebDriver>();
 
                 if (driver != null)
                 {
                     driver.Quit();
-            }
+                }
 
         }
            

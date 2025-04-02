@@ -9,6 +9,7 @@ using RazorEngine.Configuration;
 using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Text.RegularExpressions;
 
 
 namespace deeBeersProject.StepDefinitions
@@ -101,44 +102,50 @@ namespace deeBeersProject.StepDefinitions
         }
 
         [Then("the user verifies that the predicted search are listed as follows")]
-        public void ThenTheUserVerifiesThatThePredictedSearchAreListedAsFollows(DataTable table)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//ul[@id='ui-id-1']")));
-            Assert.IsTrue(deeBeersPage.SearchList().Displayed);
-
-            var suggestions = deeBeersPage.SearchList().FindElements(By.TagName("li"));
-
-            Assert.AreNotEqual(0, suggestions.Count, "No search predictions displayed! Possible issues: XPath incorrect or dropdown not visible.");
-            Assert.AreEqual(10, suggestions.Count, $"The number of search predictions does not match the expected count. Expected: 10, But was: {suggestions.Count}");
-
-
-            Dictionary<string, string> expectedResults = new Dictionary<string, string>
+            public void ThenCheckThatThePredictedSearchAreListedAsFollows(DataTable expectedTable)
             {
-                { "jwaneng", "130" },
-                { "jwaneng mine", "60" },
-                { "jwaneng cut", "28" },
-                { "jwaneng mines", "23" },
-                { "jwaneng orapa", "12" },
-                { "jwaneng production", "10" },
-                { "jwaneng 1982", "6" },
-                { "jwaneng hospital", "5" },
-                { "jwaneng botswana", "4" },
-                { "jwaneng community", "4" }
-            };
-            
-            foreach (var suggestion in suggestions)
-            {
-                var parts = suggestion.Text.Split('(');
-                var text = parts[0].Trim();
-                var value = parts.Length > 1 ? parts[1].Trim(')') : "N/A";
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//ul[@id='ui-id-1']")));
 
-                // Assert that each suggestion exists in expectedResults and has the correct value
-                Assert.IsTrue(expectedResults.ContainsKey(text), $"Unexpected suggestion found: {text}");
-                Assert.AreEqual(expectedResults[text], value, $"Mismatch for suggestion '{text}': Expected {expectedResults[text]}, but found {value}");
+                Assert.IsTrue(deeBeersPage.SearchList().Displayed, "Search list is not displayed.");
+
+                var suggestions = deeBeersPage.SearchList().FindElements(By.TagName("li"));
+                Console.WriteLine($"DEBUG: Found {suggestions.Count} search suggestions.");
+
+
+                Dictionary<string, int> actualSuggestions = new Dictionary<string, int>();
+                foreach (var suggestion in suggestions)
+                {
+                    string text = suggestion.Text.Trim();
+                    var match = Regex.Match(text, @"^(.*?)\s*\((\d+)\)$");
+
+                    if (match.Success)
+                    {
+                        string suggestionText = match.Groups[1].Value.Trim();
+                        int suggestionValue = int.Parse(match.Groups[2].Value.Trim());
+                        actualSuggestions[suggestionText] = suggestionValue;
+                    }
+                    Console.WriteLine($"Extracted: {text}");
+                }
+
+
+                Dictionary<string, int> expectedSuggestions = expectedTable.Rows
+                    .Skip(1)
+                    .ToDictionary(row => row[0].ToString().Trim(), row => int.Parse(row[1].ToString().Trim()));
+
+
+                Assert.AreEqual(expectedSuggestions.Count, actualSuggestions.Count,
+                    $"Mismatch in suggestion count. Expected: {expectedSuggestions.Count}, Found: {actualSuggestions.Count}");
+
+                foreach (var expected in expectedSuggestions)
+                {
+                    Assert.IsTrue(actualSuggestions.ContainsKey(expected.Key), $"Missing suggestion: {expected.Key}");
+                    Assert.AreEqual(expected.Value, actualSuggestions[expected.Key],
+                        $"Mismatch for '{expected.Key}'. Expected: {expected.Value}, Found: {actualSuggestions[expected.Key]}");
+                }
+
             }
-        }
 
-       }
-   
+
+        }
     }
